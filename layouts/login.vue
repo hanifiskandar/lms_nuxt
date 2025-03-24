@@ -15,7 +15,7 @@
           
           <form @submit.prevent>
             <div class="mb-6">
-              <UFormField label="Email Address" name="email">
+              <UFormField label="Email Addresss" name="email">
                 <UInput
                   type="email"
                   id="email"
