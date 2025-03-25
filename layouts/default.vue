@@ -1,20 +1,22 @@
 <template>
   <div class="flex h-screen bg-gray-200">
     <!-- Sidebar -->
-    <aside :class="['bg-blue-900 text-white shadow-md transition-all duration-300', sidebarOpen ? 'w-64' : 'w-20']">
+    <aside :class="['bg-emerald-700 text-white shadow-md transition-all duration-300', sidebarOpen ? 'w-64' : 'w-20']">
       <div class="p-5 flex items-center justify-between">
         <!-- Logo/Icon -->
         <div class="flex items-center space-x-3">
-          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10l1-2m0 0a9 9 0 0116 0m-16 0a9 9 0 0016 0m-8 0v4m0 4h.01" />
+          <!-- Leaf Icon (SVG) -->
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <path d="M12 3C9 3 6 6 6 9c0 4 6 9 6 9s6-5 6-9c0-3-3-6-6-6zm0 2c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z"></path>
           </svg>
-          <h2 v-if="sidebarOpen" class="text-xl font-bold">Admin</h2>
+          <h2 v-if="sidebarOpen" class="text-xl font-bold drop-shadow-md">LeafSync</h2>
         </div>
       </div>
       <nav>
         <ul>
           <li class="mb-2 mx-2">
-            <NuxtLink to="/dashboard" class="flex items-center p-3 rounded-lg hover:bg-blue-700">
+            <NuxtLink to="/dashboard" class="flex items-center p-3 rounded-lg hover:bg-emerald-800">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 10l1-2m0 0a9 9 0 0116 0m-16 0a9 9 0 0016 0m-8 0v4m0 4h.01" />
               </svg>
@@ -22,7 +24,7 @@
             </NuxtLink>
           </li>
           <li class="mb-2 mx-2">
-            <NuxtLink to="/users" class="flex items-center p-3 rounded-lg hover:bg-blue-700">
+            <NuxtLink to="/users" class="flex items-center p-3 rounded-lg hover:bg-emerald-800">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
               </svg>
@@ -30,9 +32,9 @@
             </NuxtLink>
           </li>
           <li class="mb-2 mx-2">
-            <NuxtLink to="/settings" class="flex items-center p-3 rounded-lg hover:bg-blue-700">
+            <NuxtLink to="/settings" class="flex items-center p-3 rounded-lg hover:bg-emerald-800">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                <path stroke-linecap="round" stroke-linejoin="round" d禁止: round stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
               <span v-if="sidebarOpen" class="ml-3">Settings</span>
             </NuxtLink>
@@ -52,7 +54,7 @@
         </button>
         <h1 class="text-xl font-semibold">Dashboard</h1>
         <div class="relative">
-          <button @click="toggleDropdown" class="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center">
+          <button @click="toggleDropdown" class="bg-emerald-500 text-white px-4 py-2 rounded-lg flex items-center">
             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A4 4 0 0112 14a4 4 0 016.879 3.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -69,8 +71,7 @@
       <main class="flex-1 p-6">
         <div class="bg-white p-6 rounded-lg shadow-md">
           <h2 class="text-lg font-bold mb-2">Welcome to the Admin Dashboard</h2>
-            <UButton color="primary" variant="outline">Button</UButton>
-
+          <UButton color="primary" variant="outline">Button</UButton>
           <p class="text-gray-600">This is your main dashboard area.</p>
         </div>
       </main>
