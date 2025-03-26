@@ -1,14 +1,12 @@
 <template>
-  <div class="flex h-screen bg-gray-200">
+  <div class="flex min-h-screen bg-gray-200">
     <!-- Sidebar -->
-    <aside :class="['bg-emerald-700 text-white shadow-md transition-all duration-300', sidebarOpen ? 'w-64' : 'w-20']">
-
+    <aside :class="['bg-emerald-700 text-white shadow-md transition-all duration-300 sticky top-0 min-h-screen', sidebarOpen ? 'w-64' : 'w-20']">
       <!-- Sidebar Content -->
       <div class="relative z-10">
         <div class="p-5 flex items-center justify-between">
           <!-- Logo/Icon -->
           <div class="flex items-center space-x-3">
-            <!-- Leaf Icon (SVG) -->
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               <path d="M12 3C9 3 6 6 6 9c0 4 6 9 6 9s6-5 6-9c0-3-3-6-6-6zm0 2c2 0 4 2 4 4s-2 4-4 4-4-2-4-4 2-4 4-4z"></path>
@@ -50,7 +48,7 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col">
       <!-- Navbar -->
-      <header class="bg-white shadow p-4 flex justify-between items-center">
+      <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-10">
         <button @click="toggleSidebar" class="focus:outline-none">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
@@ -66,15 +64,19 @@
           </div>
         </div>
         <div class="relative">
-          <button @click="toggleDropdown" class="bg-emerald-500 text-white px-4 py-2 rounded-lg flex items-center">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A4 4 0 0112 14a4 4 0 016.879 3.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Profile
+          <button @click="toggleDropdown">
+            <UIcon name="mdi:account-circle" class="size-10 bg-emerald-500 text-white rounded-full" />
           </button>
-          <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-            <NuxtLink to="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</NuxtLink>
-            <button @click="logout" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Sign Out</button>
+          <div v-if="dropdownOpen" class="absolute right-0 mt-2 w-48 bg-white border border-gray-500 rounded-lg shadow-md py-2 ring-1 ring-emerald-200">
+            <NuxtLink to="/profile" class="flex items-center px-4 py-1 font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors duration-200">
+              <UIcon name="mdi:account" class="w-5 h-5 mr-2" />
+              Profile
+            </NuxtLink>
+            <hr class="border-t border-gray-200 my-1" />
+            <button @click="logout" class="flex items-center w-full text-left px-4 py-1 font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors duration-200">
+              <UIcon name="mdi:logout" class="w-5 h-5 mr-2" />
+              Sign Out
+            </button>
           </div>
         </div>
       </header>
@@ -98,24 +100,28 @@ const currentDate = ref('');
 // Function to update the time and date
 const updateTimeAndDate = () => {
   const now = new Date();
-  currentTime.value = now.toLocaleTimeString(); // e.g., "2:35:47 PM"
+  currentTime.value = now.toLocaleTimeString();
   currentDate.value = now.toLocaleDateString('en-US', { 
     weekday: 'short', 
     year: 'numeric', 
     month: 'short', 
     day: 'numeric' 
-  }); // e.g., "Tue, Mar 25, 2025"
+  });
 };
 
-// Update every second
+const organizationOptions = ref([
+  { value: "agensi1", label: "Agensi 1" },
+  { value: "agensi2", label: "Agensi 2" },
+]);
+
 let timeInterval;
 onMounted(() => {
-  updateTimeAndDate(); // Set initial time and date
-  timeInterval = setInterval(updateTimeAndDate, 1000); // Update every second
+  updateTimeAndDate();
+  timeInterval = setInterval(updateTimeAndDate, 1000);
 });
 
 onUnmounted(() => {
-  clearInterval(timeInterval); // Clean up interval when component unmounts
+  clearInterval(timeInterval);
 });
 
 const toggleSidebar = () => {
@@ -130,7 +136,6 @@ const logout = () => {
   console.log("Logging out...");
 };
 </script>
-
 
 <style scoped>
 .animated-gradient {
