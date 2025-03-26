@@ -1,2 +1,20 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+.fc {
+  max-height: 500px;
+}
+
+.fc .fc-button {
+  background-color: #10b981; /* emerald-500 */
+  color: #ffffff; /* white */
+}
+
+.fc .fc-button:hover {
+  background-color: #059669; /* emerald-600 */
+}
+
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: #047857; /* emerald-700 */
+}

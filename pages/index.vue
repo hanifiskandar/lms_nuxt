@@ -165,7 +165,7 @@ const calendarOptions = ref({
 // Leave Requests
 const leaveRequests = ref([
   { id: 1, employee: 'Muhammad Hanif', type: 'Annual', startDate: '2025-04-01', endDate: '2025-04-03', status: 'Pending' },
-  { id: 2, employee: 'Jane Doe', type: 'Sick', startDate: '2025-03-28', endDate: '2025-03-29', status: 'Approved' },
+  { id: 2, employee: 'Jane Doe', type: 'Sick', startDate: '2025-03-28', endDate: '2025-03-29', status: 'Reject' },
   { id: 3, employee: 'John Smith', type: 'Maternity', startDate: '2025-05-01', endDate: '2025-07-01', status: 'Pending' }
 ]);
 const statusFilter = ref('All');
@@ -179,23 +179,3 @@ const handleAction = (request) => {
 };
 </script>
 
-
-<style scoped>
-.fc {
-  max-height: 500px;
-}
-
-.fc .fc-button {
-  background-color: #10b981; /* emerald-500 */
-  color: #ffffff; /* white */
-}
-
-.fc .fc-button:hover {
-  background-color: #059669; /* emerald-600 */
-}
-
-.fc .fc-button-primary:not(:disabled):active,
-.fc .fc-button-primary:not(:disabled).fc-button-active {
-  background-color: #047857; /* emerald-700 */
-}
-</style>
