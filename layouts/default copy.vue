@@ -14,7 +14,7 @@
             <h2 v-if="sidebarOpen" class="text-xl font-bold drop-shadow-md">LeafSync</h2>
           </div>
         </div>
-        <nav>
+       <nav>
           <ul>
             <li class="mb-2 mx-2">
               <NuxtLink 
@@ -35,102 +35,6 @@
                 <UIcon name="mdi:account" class="w-5 h-5 mr-2" />
                 <span v-if="sidebarOpen" class="ml-3">Profile</span>
               </NuxtLink>
-            </li>
-            <!-- Leave Menu with Sub-tabs -->
-            <li class="mb-2 mx-2">
-              <button 
-                @click="toggleLeaveMenu" 
-                class="flex items-center w-full p-3 rounded-lg hover:bg-emerald-800 text-left"
-                :class="{ 'bg-emerald-900': leaveMenuOpen }"
-              >
-                <UIcon name="mdi:calendar-clock" class="w-5 h-5 mr-2" />
-                <span v-if="sidebarOpen" class="ml-3">Leave Management</span>
-                <UIcon 
-                  :name="leaveMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                  class="w-5 h-5 ml-auto" 
-                  v-if="sidebarOpen" 
-                />
-              </button>
-              <ul v-if="leaveMenuOpen && sidebarOpen" class="pl-10 mt-1 space-y-1">
-                <li>
-                  <NuxtLink 
-                    to="/leave/apply" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:calendar-plus" class="w-5 h-5 mr-2" />
-                    <span>Apply Leave</span>
-                  </NuxtLink>
-                </li>
-                <li>
-                  <NuxtLink 
-                    to="/leave/requests" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:calendar-question" class="w-5 h-5 mr-2" />
-                    <span>Leave Requests</span>
-                  </NuxtLink>
-                </li>
-                <li>
-                  <NuxtLink 
-                    to="/leave/balance" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:calendar-check" class="w-5 h-5 mr-2" />
-                    <span>Leave Balance</span>
-                  </NuxtLink>
-                </li>
-                <li>
-                  <NuxtLink 
-                    to="/leave/approvals" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:calendar-edit" class="w-5 h-5 mr-2" />
-                    <span>Leave Approvals</span>
-                  </NuxtLink>
-                </li>
-              </ul>
-            </li>
-            <!-- New Employee Menu with Sub-tabs -->
-            <li class="mb-2 mx-2">
-              <button 
-                @click="toggleEmployeeMenu" 
-                class="flex items-center w-full p-3 rounded-lg hover:bg-emerald-800 text-left"
-                :class="{ 'bg-emerald-900': employeeMenuOpen }"
-              >
-                <UIcon name="mdi:account-group" class="w-5 h-5 mr-2" />
-                <span v-if="sidebarOpen" class="ml-3">Manage Employee</span>
-                <UIcon 
-                  :name="employeeMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                  class="w-5 h-5 ml-auto" 
-                  v-if="sidebarOpen" 
-                />
-              </button>
-              <ul v-if="employeeMenuOpen && sidebarOpen" class="pl-10 mt-1 space-y-1">
-                <li>
-                  <NuxtLink 
-                    to="/employee/add" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:account-plus" class="w-5 h-5 mr-2" />
-                    <span>Add Employee</span>
-                  </NuxtLink>
-                </li>
-                <li>
-                  <NuxtLink 
-                    to="/employee/list" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
-                    <UIcon name="mdi:account-details" class="w-5 h-5 mr-2" />
-                    <span>List Employee</span>
-                  </NuxtLink>
-                </li>
-              </ul>
             </li>
             <li class="mb-2 mx-2">
               <NuxtLink 
@@ -196,8 +100,6 @@ import { ref, onMounted, onUnmounted } from 'vue';
 
 const sidebarOpen = ref(true);
 const dropdownOpen = ref(false);
-const employeeMenuOpen = ref(false); // New state for employee menu
-const leaveMenuOpen = ref(false); // New state for leave menu
 const currentTime = ref('');
 const currentDate = ref('');
 
@@ -234,14 +136,6 @@ const toggleSidebar = () => {
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
-};
-
-const toggleEmployeeMenu = () => {
-  employeeMenuOpen.value = !employeeMenuOpen.value;
-};
-
-const toggleLeaveMenu = () => {
-  leaveMenuOpen.value = !leaveMenuOpen.value;
 };
 
 const logout = () => {
