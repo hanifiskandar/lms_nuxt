@@ -475,7 +475,7 @@
           <UButton
             color="primary"
             variant="solid"
-            label="Daftar"
+            label="Submit"
             @click="handleSubmit"
           />
         </UForm>
@@ -948,7 +948,7 @@
           <UButton
             color="primary"
             variant="solid"
-            label="Save Family Info"
+            label="Submit"
             @click="handleSubmit"
           />
         </UForm>
