@@ -61,11 +61,68 @@
               </NuxtLink>
             </li>
             <!-- Settings -->
-            <li class="mb-2 mx-2">
+            <!-- <li class="mb-2 mx-2">
               <NuxtLink to="/setting" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                 <UIcon name="ic:sharp-settings" class="w-5 h-5 mr-2" />
                 <span v-if="sidebarOpen" class="ml-3">Settings</span>
               </NuxtLink>
+            </li> -->
+            <li class="mb-2 mx-2">
+              <button 
+                @click="toggleSettingsMenu" 
+                class="flex items-center w-full p-3 rounded-lg hover:bg-emerald-800 text-left"
+                :class="{ 'bg-emerald-900': settingsMenuOpen }"
+              >
+                <UIcon name="ic:sharp-settings" class="w-5 h-5 mr-2" />
+                <span v-if="sidebarOpen" class="ml-3">Settings</span>
+                <UIcon 
+                  :name="settingsMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                  class="w-5 h-5 ml-auto" 
+                  v-if="sidebarOpen" 
+                />
+              </button>
+              <ul v-if="settingsMenuOpen && sidebarOpen" class="pl-10 mt-1 space-y-1">
+                <li>
+                  <NuxtLink 
+                    to="/setting/reset-password" 
+                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
+                    exact-active-class="bg-emerald-900 text-white"
+                  >
+                    <UIcon name="mdi:lock-reset" class="w-5 h-5 mr-2" />
+                    <span>Reset Password</span>
+                  </NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink 
+                    to="/setting/company-info" 
+                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
+                    exact-active-class="bg-emerald-900 text-white"
+                  >
+                    <UIcon name="mdi:office-building" class="w-5 h-5 mr-2" />
+                    <span>Company Info</span>
+                  </NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink 
+                    to="/setting/notifications" 
+                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
+                    exact-active-class="bg-emerald-900 text-white"
+                  >
+                    <UIcon name="mdi:bell-settings" class="w-5 h-5 mr-2" />
+                    <span>Notifications</span>
+                  </NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink 
+                    to="/setting/payslip-config" 
+                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
+                    exact-active-class="bg-emerald-900 text-white"
+                  >
+                    <UIcon name="mdi:file-document-edit" class="w-5 h-5 mr-2" />
+                    <span>Payslip Config</span>
+                  </NuxtLink>
+                </li>
+              </ul>
             </li>
           </ul>
         </nav>
@@ -205,6 +262,7 @@ const dropdownOpen = ref(false);
 const employeeMenuOpen = ref(false);
 const leaveMenuOpen = ref(false);
 const notificationsOpen = ref(false);
+const settingsMenuOpen = ref(false);
 const currentTime = ref('');
 const currentDate = ref('');
 
@@ -257,6 +315,10 @@ const toggleLeaveMenu = () => {
 const toggleNotifications = () => {
   notificationsOpen.value = !notificationsOpen.value;
   if (dropdownOpen.value) dropdownOpen.value = false; // Close profile dropdown if open
+};
+
+const toggleSettingsMenu = () => {
+  settingsMenuOpen.value = !settingsMenuOpen.value;
 };
 
 const markAllAsRead = () => {
