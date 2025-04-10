@@ -1,7 +1,10 @@
 <template>
   <div class="bg-white p-6 rounded-xl shadow-lg">
-    <div class="bg-emerald-600 text-white py-3 px-6 rounded-t-xl flex items-center justify-between">
+    <!-- <div class="bg-emerald-600 text-white py-3 px-6 rounded-t-xl flex items-center justify-between">
       <span class="text-lg font-bold">Payslips</span>
+    </div> -->
+    <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
+      <span class="text-sm font-bold">Payslips</span>
     </div>
 
     <!-- Filters -->

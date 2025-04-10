@@ -1,16 +1,45 @@
 <template>
-  <div>
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Notification Settings</h2>
-    <div class="space-y-4 max-w-md">
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Email Notifications</span>
-        <USwitch v-model="notificationSettings.email" color="emerald" />
+  <div class="bg-white p-4 rounded-lg shadow-md">
+    <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
+      <span class="text-sm font-bold">Notification Settings</span>
+    </div>
+    <div class="p-2">
+      <div class="space-y-4">
+        <div class="mb-4">
+          <UFormField 
+            for="emailNotifications" 
+            label="Email Notifications" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <USwitch 
+            id="emailNotifications"
+            v-model="notificationSettings.email" 
+            color="primary" 
+            class="w-1/2" 
+          />
+        </div>
+        <div class="mb-4">
+          <UFormField 
+            for="inAppNotifications" 
+            label="In-App Notifications" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <USwitch 
+            id="inAppNotifications"
+            v-model="notificationSettings.inApp" 
+            color="primary" 
+            class="w-1/2" 
+          />
+        </div>
+        <div>
+          <UButton 
+            color="primary" 
+            variant="solid" 
+            label="Save" 
+            @click="saveNotificationSettings" 
+          />
+        </div>
       </div>
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">In-App Notifications</span>
-        <USwitch v-model="notificationSettings.inApp" color="emerald" />
-      </div>
-      <UButton color="primary" variant="solid" label="Save" @click="saveNotificationSettings" />
     </div>
   </div>
 </template>

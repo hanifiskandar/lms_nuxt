@@ -1,20 +1,58 @@
 <template>
-  <div>
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Payslip Configuration</h2>
-    <div class="space-y-4 max-w-md">
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Show Overtime</span>
-        <USwitch v-model="payslipConfig.overtime" color="emerald" />
+  <div class="bg-white p-4 rounded-lg shadow-md">
+    <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
+      <span class="text-sm font-bold">Payslip Configuration</span>
+    </div>
+    <div class="p-2">
+      <div class="space-y-4">
+        <div class="mb-4">
+          <UFormField 
+            for="overtime" 
+            label="Show Overtime" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <USwitch 
+            id="overtime"
+            v-model="payslipConfig.overtime" 
+            color="primary" 
+            class="w-1/2" 
+          />
+        </div>
+        <div class="mb-4">
+          <UFormField 
+            for="deductions" 
+            label="Show Deductions" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <USwitch 
+            id="deductions"
+            v-model="payslipConfig.deductions" 
+            color="primary" 
+            class="w-1/2" 
+          />
+        </div>
+        <div class="mb-4">
+          <UFormField 
+            for="bonuses" 
+            label="Show Bonuses" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <USwitch 
+            id="bonuses"
+            v-model="payslipConfig.bonuses" 
+            color="primary" 
+            class="w-1/2" 
+          />
+        </div>
+        <div>
+          <UButton 
+            color="primary" 
+            variant="solid" 
+            label="Save" 
+            @click="savePayslipConfig" 
+          />
+        </div>
       </div>
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Show Deductions</span>
-        <USwitch v-model="payslipConfig.deductions" color="emerald" />
-      </div>
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-medium text-gray-700">Show Bonuses</span>
-        <USwitch v-model="payslipConfig.bonuses" color="emerald" />
-      </div>
-      <UButton color="primary" variant="solid" label="Save" @click="savePayslipConfig" />
     </div>
   </div>
 </template>

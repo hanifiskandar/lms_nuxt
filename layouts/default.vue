@@ -83,41 +83,25 @@
               </button>
               <ul v-if="settingsMenuOpen && sidebarOpen" class="pl-10 mt-1 space-y-1">
                 <li>
-                  <NuxtLink 
-                    to="/setting/reset-password" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
+                  <NuxtLink to="/setting/reset-password" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                     <UIcon name="mdi:lock-reset" class="w-5 h-5 mr-2" />
                     <span>Reset Password</span>
                   </NuxtLink>
                 </li>
                 <li>
-                  <NuxtLink 
-                    to="/setting/company-info" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
+                  <NuxtLink to="/setting/company-info" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                     <UIcon name="mdi:office-building" class="w-5 h-5 mr-2" />
                     <span>Company Info</span>
                   </NuxtLink>
                 </li>
                 <li>
-                  <NuxtLink 
-                    to="/setting/notifications" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
+                  <NuxtLink to="/setting/notifications" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                     <UIcon name="mdi:bell-settings" class="w-5 h-5 mr-2" />
                     <span>Notifications</span>
                   </NuxtLink>
                 </li>
                 <li>
-                  <NuxtLink 
-                    to="/setting/payslip-config" 
-                    class="flex items-center p-2 rounded-lg hover:bg-emerald-800"
-                    exact-active-class="bg-emerald-900 text-white"
-                  >
+                  <NuxtLink to="/setting/payslip-config" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                     <UIcon name="mdi:file-document-edit" class="w-5 h-5 mr-2" />
                     <span>Payslip Config</span>
                   </NuxtLink>

@@ -1,21 +1,54 @@
 <template>
-  <div>
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Company Info</h2>
-    <UForm :state="companyData" class="space-y-4 max-w-md" @submit="saveCompanyInfo">
-      <UFormField label="Company Name" :ui="{ label: 'text-sm font-semibold text-gray-700' }" required>
-        <UInput v-model="companyData.name" size="lg" />
-      </UFormField>
-      <UFormField label="Company Logo" :ui="{ label: 'text-sm font-semibold text-gray-700' }">
-        <input 
-          type="file" 
-          @change="uploadLogo" 
-          accept="image/*" 
-          class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
-        />
-        <img v-if="companyData.logoPreview" :src="companyData.logoPreview" alt="Logo Preview" class="mt-2 w-32 h-32 object-contain" />
-      </UFormField>
-      <UButton color="primary" variant="solid" label="Save" type="submit" />
-    </UForm>
+  <div class="bg-white p-4 rounded-lg shadow-md">
+    <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
+      <span class="text-sm font-bold">Company Info</span>
+    </div>
+    <div class="p-2">
+      <UForm :state="companyData" class="space-y-4" @submit="saveCompanyInfo">
+        <div class="mb-4">
+          <UFormField 
+            for="companyName" 
+            label="Company Name" 
+            :ui="{ label: 'font-bold' }" 
+            required 
+          />
+          <UInput 
+            id="companyName"
+            v-model="companyData.name" 
+            size="lg" 
+            class="w-1/2" 
+          />
+        </div>
+        <div class="mb-4">
+          <UFormField 
+            for="companyLogo" 
+            label="Company Logo" 
+            :ui="{ label: 'font-bold' }" 
+          />
+          <input 
+            id="companyLogo"
+            type="file" 
+            @change="uploadLogo" 
+            accept="image/*" 
+            class="block w-1/2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+          />
+          <img 
+            v-if="companyData.logoPreview" 
+            :src="companyData.logoPreview" 
+            alt="Logo Preview" 
+            class="mt-2 w-32 h-32 object-contain" 
+          />
+        </div>
+        <div>
+          <UButton 
+            color="primary" 
+            variant="solid" 
+            label="Save" 
+            type="submit" 
+          />
+        </div>
+      </UForm>
+    </div>
   </div>
 </template>
 
