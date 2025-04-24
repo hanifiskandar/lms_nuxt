@@ -21,7 +21,7 @@
               </NuxtLink>
             </li>
             <li class="mb-2 mx-2">
-              <NuxtLink to="/profile" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
+              <NuxtLink to="/profile/personal" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
                 <UIcon name="mdi:account" class="w-5 h-5 mr-2" />
                 <span v-if="sidebarOpen" class="ml-3">Profile</span>
               </NuxtLink>
