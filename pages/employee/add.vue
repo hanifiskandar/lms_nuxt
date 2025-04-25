@@ -135,52 +135,6 @@
                 {{ errorMessages.password_confirmation }}
               </div>
             </div>
-            <!-- Leave Balances -->
-            <div class="w-full md:w-1/3 px-2 mb-4">
-              <UFormField for="annual_leave" label="Annual Leave (AL)" :ui="{ label: 'font-bold' }" required />
-              <UInput
-                id="annual_leave"
-                v-model="formData.annual_leave"
-                type="number"
-                size="lg"
-                class="w-full"
-                min="0"
-                @blur="v$.annual_leave.$touch()"
-              />
-              <div v-if="errorMessages.annual_leave" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                {{ errorMessages.annual_leave }}
-              </div>
-            </div>
-            <div class="w-full md:w-1/3 px-2 mb-4">
-              <UFormField for="medical_leave" label="Medical Leave (MC)" :ui="{ label: 'font-bold' }" required />
-              <UInput
-                id="medical_leave"
-                v-model="formData.medical_leave"
-                type="number"
-                size="lg"
-                class="w-full"
-                min="0"
-                @blur="v$.medical_leave.$touch()"
-              />
-              <div v-if="errorMessages.medical_leave" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                {{ errorMessages.medical_leave }}
-              </div>
-            </div>
-            <div class="w-full md:w-1/3 px-2 mb-4">
-              <UFormField for="emergency_leave" label="Emergency Leave (EL)" :ui="{ label: 'font-bold' }" required />
-              <UInput
-                id="emergency_leave"
-                v-model="formData.emergency_leave"
-                type="number"
-                size="lg"
-                class="w-full"
-                min="0"
-                @blur="v$.emergency_leave.$touch()"
-              />
-              <div v-if="errorMessages.emergency_leave" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                {{ errorMessages.emergency_leave }}
-              </div>
-            </div>
           </div>
         </div>
 
@@ -212,9 +166,6 @@ const formData = ref({
   username: "",
   password: "",
   password_confirmation: "",
-  annual_leave: null,
-  medical_leave: null,
-  emergency_leave: null,
 });
 
 // Validation rules
@@ -234,9 +185,6 @@ const rules = {
     required: helpers.withMessage("Password Confirmation is required", required),
     sameAs: helpers.withMessage("Passwords do not match", sameAs(ref(() => formData.value.password))),
   },
-  annual_leave: { required: helpers.withMessage("Annual Leave is required", required) },
-  medical_leave: { required: helpers.withMessage("Medical Leave is required", required) },
-  emergency_leave: { required: helpers.withMessage("Emergency Leave is required", required) },
 };
 
 // Initialize Vuelidate
@@ -256,9 +204,6 @@ const errorMessages = computed(() => ({
   username: v$.value.username.$error ? v$.value.username.$errors[0].$message : backendErrors.value.username?.[0] || "",
   password: v$.value.password.$error ? v$.value.password.$errors[0].$message : backendErrors.value.password?.[0] || "",
   password_confirmation: v$.value.password_confirmation.$error ? v$.value.password_confirmation.$errors[0].$message : backendErrors.value.password_confirmation?.[0] || "",
-  annual_leave: v$.value.annual_leave.$error ? v$.value.annual_leave.$errors[0].$message : backendErrors.value.annual_leave?.[0] || "",
-  medical_leave: v$.value.medical_leave.$error ? v$.value.medical_leave.$errors[0].$message : backendErrors.value.medical_leave?.[0] || "",
-  emergency_leave: v$.value.emergency_leave.$error ? v$.value.emergency_leave.$errors[0].$message : backendErrors.value.emergency_leave?.[0] || "",
 }));
 
 // Form submission
@@ -287,9 +232,6 @@ const onSubmit = async () => {
       username: "",
       password: "",
       password_confirmation: "",
-      annual_leave: null,
-      medical_leave: null,
-      emergency_leave: null,
     };
     v$.value.$reset();
   } catch (error) {
