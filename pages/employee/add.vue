@@ -70,41 +70,30 @@
               </div>
             </div>
             <div class="flex flex-wrap -mx-2">
-              <div class="w-full md:w-1/3 px-2 mb-4">
-                <UFormField for="designation" label="Designation" :ui="{ label: 'font-bold' }" required />
-                <UInput
-                  id="designation"
-                  v-model="formData.designation"
-                  type="text"
-                  size="lg"
+              <div class="w-full md:w-1/2 px-2 mb-4">
+                <UFormField for="designation_id" label="Designation" :ui="{ label: 'font-bold' }" required />
+                <USelect
+                  id="designation_id"
+                  v-model="formData.designation_id"
+                  :items="designationOptions"
                   class="w-full"
-                  @blur="v$.designation.$touch()"
+                  size="lg"
+                  label-key="name"
+                  value-key="id"
+                  @blur="v$.designation_id.$touch()"
                 />
-                <div v-if="errorMessages.designation" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                  {{ errorMessages.designation }}
+                <div v-if="errorMessages.designation_id" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                  {{ errorMessages.designation_id }}
                 </div>
               </div>
-              <div class="w-full md:w-1/3 px-2 mb-4">
-                <UFormField for="position_level" label="Position Level" :ui="{ label: 'font-bold' }" required />
-                <UInput
-                  id="position_level"
-                  v-model="formData.position_level"
-                  type="text"
-                  size="lg"
-                  class="w-full"
-                  @blur="v$.position_level.$touch()"
-                />
-                <div v-if="errorMessages.position_level" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                  {{ errorMessages.position_level }}
-                </div>
-              </div>
-              <div class="w-full md:w-1/3 px-2 mb-4">
+              <div class="w-full md:w-1/2 px-2 mb-4">
                 <UFormField for="department_id" label="Department" :ui="{ label: 'font-bold' }" required />
                 <USelect
                   id="department_id"
                   v-model="formData.department_id"
                   :items="departmentOptions"
                   class="w-full"
+                  size="lg"
                   label-key="name"
                   value-key="id"
                   @blur="v$.department_id.$touch()"
@@ -161,9 +150,6 @@
           </div>
         </div>
 
-        {{ departmentOptions }}
-
-        <!-- Submit Button -->
         <UButton
           color="primary"
           variant="solid"
@@ -184,8 +170,7 @@ import { required, email, helpers, sameAs } from "@vuelidate/validators";
 const formData = ref({
   name: "",
   nric: "",
-  designation: "",
-  position_level: "",
+  designation_id: "",
   department_id: "",
   mobile_phone: "",
   email: "",
@@ -193,15 +178,16 @@ const formData = ref({
   password: "",
   password_confirmation: "",
 });
-
 const departmentOptions = ref([]);
+const designationOptions = ref([]);
+
+const passwordValue = computed(()=>formData.value.password)
 
 // Validation rules
 const rules = {
   name: { required: helpers.withMessage("Name is required", required) },
   nric: { required: helpers.withMessage("NRIC is required", required) },
-  designation: { required: helpers.withMessage("Designation is required", required) },
-  position_level: { required: helpers.withMessage("Position Level is required", required) },
+  designation_id: { required: helpers.withMessage("Designation is required", required) },
   department_id: { required: helpers.withMessage("Department is required", required) },
   mobile_phone: { required: helpers.withMessage("Mobile Phone is required", required) },
   email: {
@@ -212,7 +198,7 @@ const rules = {
   password: { required: helpers.withMessage("Password is required", required) },
   password_confirmation: {
     required: helpers.withMessage("Password Confirmation is required", required),
-    sameAs: helpers.withMessage("Passwords do not match", sameAs(ref(() => formData.value.password))),
+    sameAsPassword: helpers.withMessage("Katalaluan tidak sepadan", sameAs(passwordValue))
   },
 };
 
@@ -223,8 +209,7 @@ const backendErrors = ref({});
 const errorMessages = computed(() => ({
   name: v$.value.name.$error ? v$.value.name.$errors[0].$message : backendErrors.value.name?.[0] || "",
   nric: v$.value.nric.$error ? v$.value.nric.$errors[0].$message : backendErrors.value.nric?.[0] || "",
-  designation: v$.value.designation.$error ? v$.value.designation.$errors[0].$message : backendErrors.value.designation?.[0] || "",
-  position_level: v$.value.position_level.$error ? v$.value.position_level.$errors[0].$message : backendErrors.value.position_level?.[0] || "",
+  designation_id: v$.value.designation_id.$error ? v$.value.designation_id.$errors[0].$message : backendErrors.value.designation_id?.[0] || "",
   department_id: v$.value.department_id.$error ? v$.value.department_id.$errors[0].$message : backendErrors.value.department_id?.[0] || "",
   mobile_phone: v$.value.mobile_phone.$error ? v$.value.mobile_phone.$errors[0].$message : backendErrors.value.mobile_phone?.[0] || "",
   email: v$.value.email.$error ? v$.value.email.$errors[0].$message : backendErrors.value.email?.[0] || "",
@@ -254,11 +239,22 @@ const onSubmit = async () => {
   }
 };
 
+const getDesignations = async () => {
+    try {
+        const response = await $fetch('/api/setting/designations')
+        if (response) {
+            designationOptions.value = response.data
+        }
+    } catch (error) {
+        console.error('Failed to fetch data', error)
+    }
+}
+
 const getDepartments = async () => {
     try {
-        const data = await $fetch('/api/setting/departments')
-        if (data.success) {
-            organizationOptions.value = data.data
+        const response = await $fetch('/api/setting/departments')
+        if (response) {
+            departmentOptions.value = response.data
         }
     } catch (error) {
         console.error('Failed to fetch data', error)
@@ -267,5 +263,6 @@ const getDepartments = async () => {
 
 onMounted(() => {
   getDepartments();
+  getDesignations();
 })
 </script>
