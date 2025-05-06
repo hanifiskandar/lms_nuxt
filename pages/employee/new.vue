@@ -1,4 +1,3 @@
-<!-- pages/profile.vue -->
 <template>
   <div class="bg-white p-4 rounded-lg shadow-md">
     <div class="mt-2">
@@ -24,7 +23,7 @@
                 </div>
               </div>
               <div class="w-full md:w-1/2 px-2 mb-4">
-                <UFormField for="nric" label="NRIC" :ui="{ label: 'font-bold' }" required />
+                <UFormField for="nric" label="Nric" :ui="{ label: 'font-bold' }" required />
                 <UInput
                   id="nric"
                   v-model="formData.nric"
@@ -66,6 +65,36 @@
                 />
                 <div v-if="errorMessages.email" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
                   {{ errorMessages.email }}
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-2">
+              <div class="w-full md:w-1/2 px-2 mb-4">
+                <UFormField for="start-date" label="Start Date" :ui="{ label: 'font-bold' }" required />
+                <UInput
+                  id="start_date"
+                  v-model="formData.start_date"
+                  type="date"
+                  size="lg"
+                  class="w-full"
+                  @blur="v$.start_date.$touch()"
+                />
+                <div v-if="errorMessages.start_date" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                  {{ errorMessages.start_date }}
+                </div>
+              </div>
+              <div class="w-full md:w-1/2 px-2 mb-4">
+                <UFormField for="martial_status" label="Martial Status" :ui="{ label: 'font-bold' }" required />
+                <USelect
+                  id="martial_status"
+                  v-model="formData.martial_status"
+                  :items="martialStatusOptions"
+                  class="w-full"
+                  size="lg"
+                  @blur="v$.martial_status.$touch()"
+                />
+                <div v-if="errorMessages.martial_status" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                  {{ errorMessages.martial_status }}
                 </div>
               </div>
             </div>
@@ -147,6 +176,18 @@
                 </div>
               </div>
             </div>
+            <div class="flex flex-wrap -mx-2">
+              <div class="w-full md:w-1/2 px-2 mb-4">
+                <UFormField for="is_active" label="Status" :ui="{ label: 'font-bold' }" required />
+                <USelect
+                  id="is_active"
+                  v-model="formData.is_active"
+                  :items="statusOptions"
+                  class="w-full"
+                  size="lg"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -170,16 +211,30 @@ import { required, email, helpers, sameAs } from "@vuelidate/validators";
 const formData = ref({
   name: "",
   nric: "",
-  designation_id: "",
-  department_id: "",
   mobile_phone: "",
   email: "",
+  start_date: "",
+  martial_status: "",
+  designation_id: "",
+  department_id: "",
   username: "",
   password: "",
   password_confirmation: "",
+  is_active: true,
 });
 const departmentOptions = ref([]);
 const designationOptions = ref([]);
+
+const martialStatusOptions = ref([
+  { value: "single", label: "Single" },
+  { value: "married", label: "Married" },
+  { value: "divorced", label: "Divorced" },
+]);
+
+const statusOptions = ref([
+  { value: true, label: "Active" },
+  { value: false, label: "Inactive" },
+])
 
 const passwordValue = computed(()=>formData.value.password)
 
@@ -187,13 +242,15 @@ const passwordValue = computed(()=>formData.value.password)
 const rules = {
   name: { required: helpers.withMessage("Name is required", required) },
   nric: { required: helpers.withMessage("NRIC is required", required) },
-  designation_id: { required: helpers.withMessage("Designation is required", required) },
-  department_id: { required: helpers.withMessage("Department is required", required) },
   mobile_phone: { required: helpers.withMessage("Mobile Phone is required", required) },
   email: {
     required: helpers.withMessage("Email is required", required),
     email: helpers.withMessage("Invalid email format", email),
   },
+  start_date: { required: helpers.withMessage("Start Date is required", required) },
+  martial_status: { required: helpers.withMessage("Martial Status is required", required) }, 
+  designation_id: { required: helpers.withMessage("Designation is required", required) },
+  department_id: { required: helpers.withMessage("Department is required", required) },
   username: { required: helpers.withMessage("Username is required", required) },
   password: { required: helpers.withMessage("Password is required", required) },
   password_confirmation: {
@@ -209,10 +266,12 @@ const backendErrors = ref({});
 const errorMessages = computed(() => ({
   name: v$.value.name.$error ? v$.value.name.$errors[0].$message : backendErrors.value.name?.[0] || "",
   nric: v$.value.nric.$error ? v$.value.nric.$errors[0].$message : backendErrors.value.nric?.[0] || "",
-  designation_id: v$.value.designation_id.$error ? v$.value.designation_id.$errors[0].$message : backendErrors.value.designation_id?.[0] || "",
-  department_id: v$.value.department_id.$error ? v$.value.department_id.$errors[0].$message : backendErrors.value.department_id?.[0] || "",
   mobile_phone: v$.value.mobile_phone.$error ? v$.value.mobile_phone.$errors[0].$message : backendErrors.value.mobile_phone?.[0] || "",
   email: v$.value.email.$error ? v$.value.email.$errors[0].$message : backendErrors.value.email?.[0] || "",
+  start_date: v$.value.start_date.$error ? v$.value.start_date.$errors[0].$message : backendErrors.value.start_date?.[0] || "",
+  martial_status: v$.value.martial_status.$error ? v$.value.martial_status.$errors[0].$message : backendErrors.value.martial_status?.[0] || "",
+  designation_id: v$.value.designation_id.$error ? v$.value.designation_id.$errors[0].$message : backendErrors.value.designation_id?.[0] || "",
+  department_id: v$.value.department_id.$error ? v$.value.department_id.$errors[0].$message : backendErrors.value.department_id?.[0] || "",
   username: v$.value.username.$error ? v$.value.username.$errors[0].$message : backendErrors.value.username?.[0] || "",
   password: v$.value.password.$error ? v$.value.password.$errors[0].$message : backendErrors.value.password?.[0] || "",
   password_confirmation: v$.value.password_confirmation.$error ? v$.value.password_confirmation.$errors[0].$message : backendErrors.value.password_confirmation?.[0] || "",
