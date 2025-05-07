@@ -291,8 +291,8 @@ const onSubmit = async () => {
   }
 
   try {
-    const response = await $fetch('/api/employee', {
-      method: 'POST',
+    const response = await $fetch(`/api/employee/${userId}`, {
+      method: 'PATCH',
       body: formData.value,
     });
 
@@ -328,7 +328,7 @@ const getDepartments = async () => {
 const getData = async () => {
 
   try {
-    const response = await $fetch('/api/employee/'+userId,{
+    const response = await $fetch(`/api/employee/${userId}`,{
       method: 'GET',
     })
 
