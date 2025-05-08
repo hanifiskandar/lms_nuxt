@@ -219,7 +219,7 @@
                 Profile
               </NuxtLink>
               <button 
-                @click="logout" 
+                @click="signOut" 
                 class="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors duration-150"
               >
                 <UIcon name="mdi:logout" class="w-5 h-5 mr-2" />
@@ -241,6 +241,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
+definePageMeta({
+  middleware: ['$auth'],
+});
+
 const sidebarOpen = ref(true);
 const dropdownOpen = ref(false);
 const employeeMenuOpen = ref(false);
@@ -249,6 +253,8 @@ const notificationsOpen = ref(false);
 const settingsMenuOpen = ref(false);
 const currentTime = ref('');
 const currentDate = ref('');
+const { logout } = useSanctum();
+
 
 // Dummy notification data
 const notifications = ref([
@@ -310,8 +316,9 @@ const markAllAsRead = () => {
   console.log("All notifications marked as read");
 };
 
-const logout = () => {
-  console.log("Logging out...");
+
+const signOut = async () => {
+  await logout();
 };
 </script>
 

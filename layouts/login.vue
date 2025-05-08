@@ -45,29 +45,35 @@
       <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-200">
         <h2 class="text-3xl font-semibold mb-4 text-center text-gray-800">Login</h2>
         
-        <form @submit.prevent>
+        <UForm :state="formData" class="space-y-4 max-w-8xl mx-1" @submit="onSubmit">
           <div class="mb-4">
-            <UFormField label="Email Address" name="email">
+            <UFormField label="Username" name="username" required/>
               <UInput
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                required
+                v-model="formData.username"
+                type="text"
+                id="username"
+                placeholder="Enter your username"
                 class="mt-2 w-full py-3 rounded-lg border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                @blur="v$.username.$touch()"
               />
-            </UFormField>
+              <div v-if="errorMessages.username" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                {{ errorMessages.username }}
+              </div>
           </div>
 
           <div class="mb-4">
-            <UFormField label="Password" name="password">
+            <UFormField label="Password" name="password" required/>
               <UInput
+                v-model="formData.password"
                 type="password"
                 id="password"
                 placeholder="Enter your password"
-                required
                 class="mt-2 w-full py-3 rounded-lg border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                @blur="v$.password.$touch()"
               />
-            </UFormField>
+              <div v-if="errorMessages.password" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                {{ errorMessages.password }}
+              </div>
           </div>
 
           <div class="flex items-center justify-between mb-8">
@@ -90,11 +96,62 @@
             variant="solid"
             class="w-full py-3 text-lg font-medium rounded-lg hover:shadow-md transition-all duration-200 flex justify-center items-center"
           >Login</UButton>
-        </form>
+        </UForm>
       </div>
     </div>
   </div>
 </template>
+
+
+<script setup>
+import { ref, computed } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, helpers, sameAs } from "@vuelidate/validators";
+
+// definePageMeta({
+//     middleware: ['$guest'],
+// });
+
+const { login } = useSanctum();
+
+const formData = ref({
+  username: "",
+  password: "",
+});
+
+const rules = {
+  username: { required: helpers.withMessage("Username is required", required) },
+  password: { required: helpers.withMessage("Password is required", required) },
+}
+
+const v$ = useVuelidate(rules, formData);
+
+const backendErrors = ref({});
+
+const errorMessages = computed(() => ({
+  username: v$.value.username.$error ? v$.value.username.$errors[0].$message : backendErrors.value.username?.[0] || "",
+  password: v$.value.password.$error ? v$.value.password.$errors[0].$message : backendErrors.value.password?.[0] || "",
+}));
+
+const onSubmit = async () => {
+  v$.value.$touch();
+
+  if (v$.value.$invalid) {
+    console.log("Please fill in all required fields", errorMessages.value);
+    return;
+  }
+
+  try {
+    await login(formData.value);
+
+    backendErrors.value = {};
+  } catch (error) {
+    backendErrors.value = error.response?.data?.errors || {};
+    console.error("Submission error:", backendErrors.value);
+  }
+};
+
+</script>
 
 <style scoped>
 input:focus {
