@@ -124,8 +124,9 @@
         </button>
         <div class="flex-1 ml-4">
           <h1 class="text-xl font-semibold animated-gradient">
-            Welcome, <span class="font-bold">Muhammad Hanif Bin Iskandar</span>
+            Welcome, <span class="font-bold">{{ user?.name }}</span>
           </h1>
+          <!-- {{ user }} -->
           <div class="flex items-center space-x-2">
             <p class="text-sm text-gray-600">{{ currentTime }}</p>
             <p class="text-sm text-gray-600">{{ currentDate }}</p>
@@ -207,8 +208,8 @@
               class="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-20"
             >
               <div class="px-4 py-2 text-sm text-gray-700">
-                <p class="font-semibold">Muhammad Hanif</p>
-                <p class="text-xs text-gray-500">hanif@example.com</p>
+                <p class="font-semibold">{{ user?.name }}</p>
+                <p class="text-xs text-gray-500">{{ user?.email }}</p>
               </div>
               <hr class="border-t border-gray-200 my-1" />
               <NuxtLink 
@@ -219,7 +220,7 @@
                 Profile
               </NuxtLink>
               <button 
-                @click="signOut" 
+                @click="logout" 
                 class="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors duration-150"
               >
                 <UIcon name="mdi:logout" class="w-5 h-5 mr-2" />
@@ -241,10 +242,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
-definePageMeta({
-  middleware: ['$auth'],
-});
-
 const sidebarOpen = ref(true);
 const dropdownOpen = ref(false);
 const employeeMenuOpen = ref(false);
@@ -253,8 +250,10 @@ const notificationsOpen = ref(false);
 const settingsMenuOpen = ref(false);
 const currentTime = ref('');
 const currentDate = ref('');
-const { logout } = useSanctum();
 
+const auth = useAuth();
+const router = useRouter()
+const user = computed(() => auth.user);
 
 // Dummy notification data
 const notifications = ref([
@@ -276,9 +275,17 @@ const updateTimeAndDate = () => {
 };
 
 let timeInterval;
-onMounted(() => {
+onMounted(async () => {
   updateTimeAndDate();
   timeInterval = setInterval(updateTimeAndDate, 1000);
+
+  // if (!auth.user) {
+  //   try {
+  //     await auth.fetchUser();
+  //   } catch (error) {
+  //     router.push('/login');
+  //   }
+  // }
 });
 
 onUnmounted(() => {
@@ -316,9 +323,9 @@ const markAllAsRead = () => {
   console.log("All notifications marked as read");
 };
 
-
-const signOut = async () => {
-  await logout();
+const logout = async () => {
+  await auth.logout();
+  router.push('/login');
 };
 </script>
 

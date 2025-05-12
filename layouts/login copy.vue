@@ -108,7 +108,6 @@ import { ref, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, sameAs } from "@vuelidate/validators";
 
-
 const router = useRouter()
 const auth = useAuth()
 
