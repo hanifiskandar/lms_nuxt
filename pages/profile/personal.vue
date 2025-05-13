@@ -4,7 +4,7 @@
     <UForm :state="formData" class="space-y-4 max-w-8xl mx-1" @submit="handleSubmit">
       <!-- Personal Information Section -->
       <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
-        <span class="text-sm font-bold">Personal Information</span>
+        <!-- <span class="text-sm font-bold">Personal Information {{ auth.user }} </span> -->
       </div>
       <div class="p-2">
         <div class="flex flex-wrap -mx-2">
@@ -204,8 +204,11 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, email, helpers } from '@vuelidate/validators';
 
 definePageMeta({
-  layout: 'default',
+  middleware: ['auth'],
 });
+const auth = useAuth();
+// const user = computed(() => auth.user);
+const userId = computed(() => auth.user.id);
 
 const formData = ref({
     emergency_contacts: []
@@ -213,7 +216,7 @@ const formData = ref({
 const page = "Personal";
 const statesOptions = ref([]);
 const route = useRoute();
-const userId = 2;
+// const userId = 2;
 
 const rules = computed(() => ({
   // name: { required: helpers.withMessage('Name is required', required) },
@@ -309,7 +312,7 @@ const getStates = async () => {
 const getData = async () => {
 
   try {
-    const response = await $fetch(`/api/employee/${userId}`,{
+    const response = await $fetch(`/api/employee/${userId.value}`, {
       method: 'GET',
     })
 

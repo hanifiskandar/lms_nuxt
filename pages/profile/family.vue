@@ -4,7 +4,7 @@
     <UForm :state="formData" class="space-y-4 max-w-8xl mx-1" @submit="handleSubmit">
       <!-- Parent and Sibling Information -->
       <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
-        <span class="text-sm font-bold">Parent and Sibling Information</span>
+        <span class="text-sm font-bold">Parent and Sibling Information  {{ user?.name }} {{ user?.id }}</span>
       </div>
       <div class="p-2">
         <div v-for="(fam, index) in formData.family_members" :key="index" class="mb-6 border-b border-gray-300 pb-4 flex">
@@ -314,8 +314,10 @@ import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 
 definePageMeta({
-  layout: 'default',
+  middleware: ['auth'],
 });
+const auth = useAuth();
+const user = computed(() => auth.user);
 
 const page = "Family";
 const formData = ref({
@@ -323,7 +325,6 @@ const formData = ref({
   children: [],
 });
 const route = useRoute();
-const userId = 2;
 
 
 const rules = computed(() => ({

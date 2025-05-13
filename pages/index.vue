@@ -118,6 +118,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
+definePageMeta({
+  middleware: ['auth'],
+});
+
 // Stats Customization
 const allStats = ref([
   { key: 'pending', label: 'Pending Requests', value: 12, subtext: 'Awaiting approval', visible: true },

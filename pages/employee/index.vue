@@ -87,6 +87,13 @@
 import { ref, computed } from 'vue';
 import { downloadFile } from '~/utils/download';
 
+definePageMeta({
+  middleware: ['auth'],
+});
+const auth = useAuth();
+const user = computed(() => auth.user);
+
+
 const toast = useToast()
 const formData = ref([]);
 const designationOptions = ref([]);

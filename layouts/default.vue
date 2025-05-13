@@ -124,7 +124,8 @@
         </button>
         <div class="flex-1 ml-4">
           <h1 class="text-xl font-semibold animated-gradient">
-            Welcome, <span class="font-bold">{{ user?.name }}</span>
+            <!-- Welcome, <span class="font-bold">{{ user?.name }}</span> -->
+            Welcome, <span class="font-bold">TEST</span>
           </h1>
           <!-- {{ user }} -->
           <div class="flex items-center space-x-2">
@@ -208,8 +209,10 @@
               class="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-20"
             >
               <div class="px-4 py-2 text-sm text-gray-700">
-                <p class="font-semibold">{{ user?.name }}</p>
-                <p class="text-xs text-gray-500">{{ user?.email }}</p>
+                <!-- <p class="font-semibold">{{ user?.name }}</p>
+                <p class="text-xs text-gray-500">{{ user?.email }}</p> -->
+                <p class="font-semibold">Name1</p>
+                <p class="text-xs text-gray-500">email1@gmail.com</p>
               </div>
               <hr class="border-t border-gray-200 my-1" />
               <NuxtLink 
@@ -241,6 +244,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+
+// definePageMeta({
+//   middleware: ['auth'],
+// });
 
 const sidebarOpen = ref(true);
 const dropdownOpen = ref(false);
