@@ -1,29 +1,24 @@
-import { $fetch } from "ofetch";
+import { $fetch } from 'ofetch';
 
 export default defineEventHandler(async (event) => {
-  const id = getRouterParam(event, "id");
-  const xsrfToken = getCookie(event, "XSRF-TOKEN") || "";
-  // const cookies = getCookies(event); // Get all cookies
-  // console.log("Cookies:", cookies); // Debug cookies
+  const config = useRuntimeConfig(event);
+  const id = getRouterParam(event, 'id');
+
+  console.log('test 123');
+  // console.log('Cookie header:', getRequestHeader(event, 'cookie'));
 
   try {
     const response = await $fetch(`http://localhost:8000/api/users/${id}`, {
-      method: "GET",
-      headers: {
-        "X-XSRF-TOKEN": xsrfToken,
-        Accept: "application/json",
-        // Cookie: Object.entries(cookies)
-        //   .map(([key, value]) => `${key}=${value}`)
-        //   .join("; "), // Forward all cookies
-      },
+      method: 'GET',
+      credentials: 'include',
     });
 
     return response;
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error("Error from Laravel:", error.data || error);
     throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: `Failed to fetch staff management: ${error.message}`,
+      statusCode: 500,
+      statusMessage: 'Failed to fetch staff management',
     });
   }
 });

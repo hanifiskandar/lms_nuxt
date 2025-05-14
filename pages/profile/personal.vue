@@ -332,8 +332,8 @@ const getStates = async () => {
 
 // const getData = async () => {
 //   try {
-
-// const response = await $fetch(`http://localhost:8000/api/users/${userId.value}`, {      method: "GET",
+//     const response = await $fetch(`http://localhost:8000/api/users/${userId.value}`, {      
+//       method: "GET",
 //       credentials: "include",
 //     });
 
@@ -346,10 +346,11 @@ const getStates = async () => {
 //     console.error("Failed to fetch user:", error);
 //   }
 // };
+const requestFetch = useRequestFetch()
 
 const getData = async () => {
   try {
-    const response = await $fetch(`/api/employee/${userId.value}`, {
+    const response = await requestFetch(`/api/employee/${userId.value}`, {
       method: "GET",
       credentials: "include",
     });
