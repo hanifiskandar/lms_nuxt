@@ -4,7 +4,7 @@
     <UForm :state="formData" class="space-y-4 max-w-8xl mx-1" @submit="handleSubmit">
       <!-- Parent and Sibling Information -->
       <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
-        <span class="text-sm font-bold">Parent and Sibling Information  {{ user?.name }} {{ user?.id }}</span>
+        <span class="text-sm font-bold">Parent and Sibling Information </span>
       </div>
       <div class="p-2">
         <div v-for="(fam, index) in formData.family_members" :key="index" class="mb-6 border-b border-gray-300 pb-4 flex">
@@ -317,15 +317,14 @@ definePageMeta({
   middleware: ['auth'],
 });
 const auth = useAuth();
-const user = computed(() => auth.user);
+const userId = computed(() => auth.user.id);
 
-const page = "Family";
 const formData = ref({
   family_members: [],
   children: [],
 });
+const page = "Family";
 const route = useRoute();
-
 
 const rules = computed(() => ({
   family_members: formData.value.family_members.map(() => ({
@@ -437,7 +436,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await $fetch(`/api/employee/${userId}`, {
+    const response = await $fetch(`/api/employee/${userId.value}`, {
       method: 'PATCH',
       body: formData.value,
       query: {
@@ -455,7 +454,7 @@ const handleSubmit = async () => {
 const getData = async () => {
 
   try {
-    const response = await $fetch(`/api/employee/${userId}`,{
+    const response = await $fetch(`/api/employee/${userId.value}`, {
       method: 'GET',
     })
 

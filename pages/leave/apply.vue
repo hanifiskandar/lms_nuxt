@@ -111,6 +111,13 @@
 import { ref, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
+import { prepareFormData } from "~/utils/formData";
+
+definePageMeta({
+  middleware: ['auth'],
+});
+const auth = useAuth();
+const userId = computed(() => auth.user.id);
 
 // Reactive form data
 const formData = ref({
@@ -179,33 +186,18 @@ const onSubmit = async () => {
   }
 
   try {
-    const formDataToSend = new FormData();
-    formDataToSend.append('type', formData.value.type);
-    formDataToSend.append('duration', formData.value.duration);
-    formDataToSend.append('start_date', formData.value.start_date);
-    formDataToSend.append('end_date', formData.value.end_date);
-    formDataToSend.append('reason', formData.value.reason);
-    if (formData.value.attachment) {
-      formDataToSend.append('attachment', formData.value.attachment);
-    }
+    const newFormData = prepareFormData(formData.value, 'attachment'); // Use the helper
 
-    const response = await $fetch('/api/leave/', {
+    const response = await $fetch('/api/leave-requests/', {
       method: 'POST',
-      body: formDataToSend,
+      body: newFormData,
     });
     
     backendErrors.value = {};
     console.log("Leave submitted successfully:", response);
     // Reset form if needed
     v$.value.$reset();
-    formData.value = {
-      type: null,
-      duration: null,
-      start_date: null,
-      end_date: null,
-      reason: '',
-      attachment: null,
-    };
+
   } catch (error) {
     backendErrors.value = error.response?.data?.errors || {};
     console.error("Submission error:", backendErrors.value);

@@ -4,7 +4,7 @@
     <UForm :state="formData" class="space-y-4 max-w-8xl mx-1" @submit="handleSubmit">
       <!-- Personal Information Section -->
       <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center">
-        <!-- <span class="text-sm font-bold">Personal Information {{ auth.user }} </span> -->
+        <span class="text-sm font-bold">Personal Information</span>
       </div>
       <div class="p-2">
         <div class="flex flex-wrap -mx-2">
@@ -207,7 +207,6 @@ definePageMeta({
   middleware: ['auth'],
 });
 const auth = useAuth();
-// const user = computed(() => auth.user);
 const userId = computed(() => auth.user.id);
 
 const formData = ref({
@@ -216,7 +215,6 @@ const formData = ref({
 const page = "Personal";
 const statesOptions = ref([]);
 const route = useRoute();
-// const userId = 2;
 
 const rules = computed(() => ({
   // name: { required: helpers.withMessage('Name is required', required) },
@@ -257,10 +255,10 @@ const errorMessages = computed(() => ({
 }));
 
 const relationOptions = ref([
-  { value: "Father", label: "Father" },
-  { value: "Mother", label: "Mother" },
-  { value: "Brother", label: "Brother" },
-  { value: "Sister", label: "Sister" },
+  { value: "father", label: "Father" },
+  { value: "mother", label: "Mother" },
+  { value: "brother", label: "Brother" },
+  { value: "sister", label: "Sister" },
 ]);
 
 const addEmergencyContact = () => {
@@ -283,7 +281,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await $fetch(`/api/employee/${userId}`, {
+    const response = await $fetch(`/api/employee/${userId.value}`, {
       method: 'PATCH',
       body: formData.value,
       query: {
@@ -309,25 +307,60 @@ const getStates = async () => {
     }
 }
 
-const getData = async () => {
+// const getData = async () => {
 
+//   try {
+//     const response = await $fetch(`/api/employee/${userId.value}`, {
+//       method: 'GET',
+//       credentials: "include",
+//     })
+
+//     const data = response.data;
+
+//     if(!data.emergency_contacts || data.emergency_contacts.length === 0){
+//       data.emergency_contacts = [
+//         { name: '', relation: '', mobile_phone: ''}
+//       ];
+//     }
+
+//     formData.value = {...data};
+
+//   } catch (error) {
+//     console.error('Failed to fetch user', error)
+//   }
+// };
+
+// const getData = async () => {
+//   try {
+
+// const response = await $fetch(`http://localhost:8000/api/users/${userId.value}`, {      method: "GET",
+//       credentials: "include",
+//     });
+
+//     const data = response.data;
+//     if (!data.emergency_contacts || data.emergency_contacts.length === 0) {
+//       data.emergency_contacts = [{ name: "", relation: "", mobile_phone: "" }];
+//     }
+//     formData.value = { ...data };
+//   } catch (error) {
+//     console.error("Failed to fetch user:", error);
+//   }
+// };
+
+const getData = async () => {
   try {
     const response = await $fetch(`/api/employee/${userId.value}`, {
-      method: 'GET',
-    })
+      method: "GET",
+      credentials: "include",
+    });
 
     const data = response.data;
-
-    if(!data.emergency_contacts || data.emergency_contacts.length === 0){
-      data.emergency_contacts = [
-        { name: '', relation: '', mobile_phone: ''}
-      ];
+    if (!data.emergency_contacts || data.emergency_contacts.length === 0) {
+      data.emergency_contacts = [{ name: "", relation: "", mobile_phone: "" }];
     }
-
-    formData.value = {...data};
-
+    formData.value = { ...data };
   } catch (error) {
-    console.error('Failed to fetch user', error)
+    console.error("Failed to fetch user:", error);
   }
 };
 

@@ -3,12 +3,17 @@ import { getQuery } from "h3";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
+  const body = await readBody(event);
+  const id = getRouterParam(event, "id");
   const query = getQuery(event);
 
+
   try {
-    const response = await $fetch("/api/users", {
+    const response = await $fetch(`/api/leave-requests/${id}`, {
       baseURL: config.public.laravelBaseUrl,
-      method: "GET",
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body,
       query,
     });
 
@@ -16,7 +21,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to fetch data",
+      statusMessage: "Failed to update data",
     });
   }
 });

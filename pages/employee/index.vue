@@ -49,20 +49,19 @@
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ user.department?.name }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ user.start_date }}</td>
               <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
-                <UButton @click="viewUser(user.id)" icon="i-heroicons-eye" class="text-blue-500 bg-white text-lg hover:scale-110 transition-transform duration-200" />
-  
-              
-                <!-- new -->
-                <!-- <NuxtLink
-                  :to="`/kawalan-capaian/pengurusan-kakitangan/${user.id}`"
-                  class="text-blue-600 hover:bg-blue-50 p-1 rounded-full transition-colors duration-200"
-                >
-                  <UIcon name="i-heroicons-eye" class="w-5 h-5" />
-                </NuxtLink> -->
-                <NuxtLink :to="`/employee/${user.id}`" class="text-yellow-500 bg-white text-lg hover:scale-110 transition-transform duration-200 pt-1">
-                  <UIcon name="i-heroicons-pencil"/>
-                </NuxtLink>
-                <UButton @click="openDeleteModal(user.id)" icon="i-heroicons-trash" class="text-red-500 bg-white text-lg hover:scale-110 transition-transform duration-200"></UButton>
+                <div class="flex items-center gap-2">
+                  <NuxtLink :to="`/profile/personal`" class="icon-button text-blue-500">
+                    <UIcon name="i-heroicons-eye" />
+                  </NuxtLink>
+
+                  <NuxtLink :to="`/employee/${user.id}`" class="icon-button text-yellow-500">
+                    <UIcon name="i-heroicons-pencil" />
+                  </NuxtLink>
+
+                  <UButton @click="openDeleteModal(user.id)" class="icon-button bg-white text-red-500">
+                    <UIcon name="i-heroicons-trash" />
+                  </UButton>
+                </div>
               </td>
             </tr>
           </tbody>
