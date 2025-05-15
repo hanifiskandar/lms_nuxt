@@ -9,17 +9,17 @@
         <div class="p-2">
           <div class="flex flex-wrap -mx-2">
             <div class="w-full md:w-1/2 px-2 mb-4">
-              <UFormField for="type" label="Type" :ui="{ label: 'font-bold' }" required />
+              <UFormField for="leave_type_id" label="Type" :ui="{ label: 'font-bold' }" required />
               <USelect
-                id="type"
-                v-model="formData.type"
+                id="leave_type_id"
+                v-model="formData.leave_type_id"
                 :items="leaveTypeOptions"
                 class="w-full"
                 size="lg"
-                @blur="v$.type.$touch()"
+                @blur="v$.leave_type_id.$touch()"
               />
-              <div v-if="errorMessages.type" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
-                {{ errorMessages.type }}
+              <div v-if="errorMessages.leave_type_id" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
+                {{ errorMessages.leave_type_id }}
               </div>
             </div>
             <div class="w-full md:w-1/2 px-2 mb-4">
@@ -79,7 +79,7 @@
                 {{ errorMessages.reason }}
               </div>
             </div>
-            <div v-if="formData.type === 2" class="w-full md:w-1/2 px-2 mb-4">
+            <div v-if="formData.leave_type_id === 2" class="w-full md:w-1/2 px-2 mb-4">
               <UFormField for="attachment" label="Attachment (PDF)" :ui="{ label: 'font-bold' }" />
               <UInput
                 id="attachment"
@@ -121,7 +121,7 @@ const userId = computed(() => auth.user.id);
 
 // Reactive form data
 const formData = ref({
-  type: null,
+  leave_type_id: null,
   duration: null,
   start_date: null,
   end_date: null,
@@ -143,20 +143,20 @@ const leaveTypeOptions = ref([
 ]);
 
 const durationOptions = ref([
-  { value: 1, label: "Full Day" },
-  { value: 2, label: "Half Day" },
+  { value: 'full_day', label: "Full Day" },
+  { value: 'half_day', label: "Half Day" },
 ]);
 
 // Validation rules matching the form fields
 const rules = {
-  type: { required: helpers.withMessage("Leave type is required", required) },
+  leave_type_id: { required: helpers.withMessage("Leave type is required", required) },
   duration: { required: helpers.withMessage("Duration is required", required) },
   start_date: { required: helpers.withMessage("Start date is required", required) },
   end_date: { required: helpers.withMessage("End date is required", required) },
   reason: { required: helpers.withMessage("Reason is required", required) },
   attachment: {
     requiredIfSick: helpers.withMessage("Attachment is required for sick leave", (value, vm) => {
-      return vm.type !== 2 || (vm.type === 2 && value !== null);
+      return vm.leave_type_id !== 2 || (vm.leave_type_id === 2 && value !== null);
     })
   }
 };
@@ -165,7 +165,7 @@ const v$ = useVuelidate(rules, formData);
 const backendErrors = ref({});
 
 const errorMessages = computed(() => ({
-  type: v$.value.type.$error ? v$.value.type.$errors[0].$message : backendErrors.value.type?.[0] || "",
+  leave_type_id: v$.value.leave_type_id.$error ? v$.value.leave_type_id.$errors[0].$message : backendErrors.value.type?.[0] || "",
   duration: v$.value.duration.$error ? v$.value.duration.$errors[0].$message : backendErrors.value.duration?.[0] || "",
   start_date: v$.value.start_date.$error ? v$.value.start_date.$errors[0].$message : backendErrors.value.start_date?.[0] || "",
   end_date: v$.value.end_date.$error ? v$.value.end_date.$errors[0].$message : backendErrors.value.end_date?.[0] || "",
@@ -187,15 +187,16 @@ const onSubmit = async () => {
 
   try {
     const newFormData = prepareFormData(formData.value, 'attachment'); // Use the helper
-
+    console.log(newFormData);
+    
     const response = await $fetch('/api/leave-requests/', {
       method: 'POST',
       body: newFormData,
+      credentials: "include",
     });
     
     backendErrors.value = {};
     console.log("Leave submitted successfully:", response);
-    // Reset form if needed
     v$.value.$reset();
 
   } catch (error) {

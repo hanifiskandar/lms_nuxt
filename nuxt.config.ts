@@ -19,6 +19,8 @@ export default defineNuxtConfig({
     public: {
       laravelBaseUrl: (process.env.LARAVEL_BASE_URL ||
         "http://localhost:8000") as string,
+      nuxtBaseUrl: (process.env.FRONTEND_URL ||
+        "http://localhost:3000") as string,
     },
   },
 });
