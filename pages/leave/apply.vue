@@ -16,6 +16,8 @@
                 :items="leaveTypeOptions"
                 class="w-full"
                 size="lg"
+                label-key="name"
+                value-key="id"
                 @blur="v$.leave_type_id.$touch()"
               />
               <div v-if="errorMessages.leave_type_id" class="text-red-500 text-xs font-medium tracking-wide px-3 pt-1">
@@ -128,19 +130,7 @@ const formData = ref({
   reason: '',
   attachment: null,
 });
-
-const leaveTypeOptions = ref([
-  { value: 1, label: "Annual Leave" },
-  { value: 2, label: "Sick Leave" },
-  { value: 3, label: "Maternity Leave" },
-  { value: 4, label: "Paternity Leave" },
-  { value: 5, label: "Emergency Leave" },
-  { value: 6, label: "Unpaid Leave" },
-  { value: 7, label: "Compassionate Leave" },
-  { value: 8, label: "Study Leave" },
-  { value: 9, label: "Hospitalization Leave" },
-  { value: 10, label: "Marriage Leave" },
-]);
+const leaveTypeOptions = ref([]);
 
 const durationOptions = ref([
   { value: 'full_day', label: "Full Day" },
@@ -178,6 +168,17 @@ const handleFileChange = (event) => {
   v$.value.attachment.$touch();
 };
 
+const getLeaveTypes = async () => {
+  try {
+      const data = await $fetch('/api/setting/leave-types')
+      if (data) {
+          leaveTypeOptions.value = data.data
+      }
+  } catch (error) {
+      console.error('Failed to fetch data', error)
+  }
+}
+
 const onSubmit = async () => {
   v$.value.$touch();
   if (v$.value.$invalid) {
@@ -198,10 +199,16 @@ const onSubmit = async () => {
     backendErrors.value = {};
     console.log("Leave submitted successfully:", response);
     v$.value.$reset();
+    router.push('/leave/requests');
 
   } catch (error) {
     backendErrors.value = error.response?.data?.errors || {};
     console.error("Submission error:", backendErrors.value);
   }
 };
+
+onMounted(() => {
+  getLeaveTypes()
+})
+
 </script>

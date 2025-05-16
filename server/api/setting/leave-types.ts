@@ -1,19 +1,14 @@
 import { $fetch } from "ofetch";
-import { getQuery } from "h3";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const query = getQuery(event);
   const cookies = parseCookies(event);
 
+
   try {
-    const response = await $fetch("/api/leave-requests", {
+    const response = await $fetch("/api/setting/leave-types", {
       baseURL: config.public.laravelBaseUrl,
-      method: "GET",
-      query,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
         Cookie: Object.entries(cookies)
           .map(([key, value]) => `${key}=${value}`)
           .join("; "),
@@ -27,7 +22,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to fetch data",
+      statusMessage: "Failed to fetch data.",
     });
   }
 });
