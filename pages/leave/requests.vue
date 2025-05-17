@@ -47,16 +47,18 @@
               :key="data.id"
               class="hover:bg-gray-50 transition-colors"
             >
-              <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.id }}</td>
+              <td class="px-6 py-4 text-sm whitespace-nowrap">{{ index + 1 }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.leave_type?.name }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.start_date }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.end_date }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.duration_label }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.reason }}</td>
               <td class="px-6 py-4 text-sm whitespace-nowrap">
-                <span v-if="data.attachment">
-                  <i :class="getAttachmentIcon(data.attachment.type)" class="mr-1"></i>
-                  {{ data.attachment.name }}
+                <span v-if="data.file_original_name">
+                  <a :href="getFileUrl(data.file_path)" target="_blank" class="flex items-center text-blue-600 hover:underline">
+                    <i :class="getAttachmentIcon(data.file_original_name)" class="mr-1"></i>
+                    {{ data.file_original_name }}
+                  </a>
                 </span>
                 <span v-else>-</span>
               </td>
@@ -92,6 +94,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 
+const config = useRuntimeConfig();
+
+
 // Filter object with date filters
 const filter = reactive({
   leave_type: null,
@@ -115,9 +120,26 @@ const durationOptions = ref([
   { value: 'half_day', label: "Half Day" },
 ]);
 
+
+const getFileUrl = (filePath) => {
+  // return filePath ? `/storage/${filePath}` : '#';
+  return filePath ? `${config.public.laravelBaseUrl}/storage/${filePath}` : '#';
+};
+
 // Function to get attachment icon class (using FontAwesome as an example)
-const getAttachmentIcon = (type) => {
-  return type === 'pdf' ? 'fas fa-file-pdf' : 'fas fa-file-word';
+const getAttachmentIcon = (fileName) => {
+  if (!fileName) return 'fas fa-file';
+  const extension = fileName.split('.').pop().toLowerCase();
+  switch (extension) {
+    case 'pdf':
+      return 'fas fa-file-pdf';
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+      return 'fas fa-file-image';
+    default:
+      return 'fas fa-file';
+  }
 };
 
 watch([() => filter.leave_type, () => filter.duration, () => filter.start_date, () => filter.end_date, currentPage, sortBy, sortDirection], () => {

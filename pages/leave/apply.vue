@@ -82,12 +82,12 @@
               </div>
             </div>
             <div v-if="formData.leave_type_id === 2" class="w-full md:w-1/2 px-2 mb-4">
-              <UFormField for="attachment" label="Attachment (PDF)" :ui="{ label: 'font-bold' }" />
+              <UFormField for="attachment" label="Attachment (PDF or Image)" :ui="{ label: 'font-bold' }" />
               <UInput
                 id="attachment"
                 type="file"
                 ref="fileInput"
-                accept=".pdf"
+                accept=".pdf,.jpg,.jpeg,.png"
                 size="lg"
                 class="w-full"
                 @change="handleFileChange"
@@ -119,6 +119,7 @@ definePageMeta({
   middleware: ['auth'],
 });
 const auth = useAuth();
+const router = useRouter();
 const userId = computed(() => auth.user.id);
 
 // Reactive form data
@@ -147,6 +148,15 @@ const rules = {
   attachment: {
     requiredIfSick: helpers.withMessage("Attachment is required for sick leave", (value, vm) => {
       return vm.leave_type_id !== 2 || (vm.leave_type_id === 2 && value !== null);
+    }),
+    validFileType: helpers.withMessage("Only PDF or image files are allowed", (value) => {
+      if (!value) return true; // Skip if no file
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+      return allowedTypes.includes(value.type);
+    }),
+    validFileSize: helpers.withMessage("File size must not exceed 5MB", (value) => {
+      if (!value) return true; // Skip if no file
+      return value.size <= 5 * 1024 * 1024; // 5MB limit
     })
   }
 };
