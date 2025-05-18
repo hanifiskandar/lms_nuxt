@@ -3,10 +3,11 @@
     <div class="mt-2">
       <!-- Header -->
       <div class="bg-emerald-600 text-white py-3 px-6 border-b flex items-center justify-between">
+        <!-- <span class="text-sm font-bold">Leave Balance - {{ user.name }}</span> -->
         <div class="flex items-center space-x-4">
           <USelect v-model="filter.year" :items="yearOptions" class="w-32" placeholder="Select Year"></USelect>
           <USelect
-            v-model="filter.leave_type"
+            v-model="selectedLeaveTypes"
             :items="leaveTypeOptions"
             multiple
             class="w-64"
@@ -19,18 +20,23 @@
         </div>
       </div>
 
-      <!-- Chart -->
-      <div class="w-full h-96 mb-6">
-        <canvas ref="leaveChart"></canvas>
-      </div>
+      <!-- Chart and Reminder -->
+      <div class="mt-4">
+        <!-- Leave Balance Chart -->
+        <!-- <div class="w-full h-72 mb-4">
+          <canvas ref="leaveChart"></canvas>
+        </div> -->
 
-      <!-- Reminder -->
-      <div class="text-sm text-gray-600 italic mb-4">
-        *Note: Annual Leave (AL) entitlement is
-        <span v-if="prorated">prorated (see Eligible column)</span>
-        <span v-else>fixed</span>
-        and may not reflect the full yearly allocation.
-        <span v-if="carryForwardAllowed">Carry-forward leave is added to AL and valid until May 31.</span>
+        {{ formData }}
+
+        <!-- Prorated and Carry Forward Reminder -->
+        <div class="text-sm text-gray-600 italic mb-4">
+          *Note: Annual Leave (AL) entitlement is
+          <span v-if="prorated">prorated (see Eligible column)</span>
+          <span v-else>fixed</span>
+          and may not reflect the full yearly allocation.
+          <span v-if="carryForwardAllowed">Carry-forward leave is added to AL and valid until May 31.</span>
+        </div>
       </div>
 
       <!-- Leave Balance Table -->
@@ -67,24 +73,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(ChartDataLabels);
 
-const leaveChart = ref(null);
-let chartInstance = null;
-
 const formData = ref([]);
 const leaveTypeOptions = ref([]);
-const selectedLeaveTypes = ref([]);
-
 const filter = reactive({
-  year: new Date().getFullYear(),
-  leave_type: [1,2,3],
-});
+  year: "",
+  leave_type: [],
+})
 
-const currentYear = new Date().getFullYear();
+const currentYear = new Date().getFullYear(); // 2025
 
 const yearOptions = computed(() => {
   const years = [];
@@ -96,124 +97,46 @@ const yearOptions = computed(() => {
 
 const getLeaveTypes = async () => {
   try {
-    const data = await $fetch('/api/setting/leave-types');
-    if (data) {
-      leaveTypeOptions.value = data.data;
-    }
+      const data = await $fetch('/api/setting/leave-types')
+      if (data) {
+          leaveTypeOptions.value = data.data
+      }
   } catch (error) {
-    console.error('Failed to fetch leave types', error);
+      console.error('Failed to fetch data', error)
   }
-};
+}
 
 const getData = async () => {
   try {
-    const response = await $fetch('/api/leave/balances', {
+    const response = await $fetch('/api/leave/balances',{
       method: 'GET',
-      query: {
+      query:{
         year: filter.year,
-        // leave_type: filter.leave_type,
-        leave_type: filter.leave_type.join(','), // "1,2,3"
-
-      },
-    });
+        leave_type: filter.year,
+      }
+    })
 
     formData.value = response.data;
-    updateChart();
-  } catch (error) {
-    console.error('Failed to fetch leave balance data', error);
+
+  } catch (error){
+    console.error('Failed to fetch data', error)
   }
 };
 
-const updateChart = () => {
-  if (!leaveChart.value) return;
 
-  const labels = formData.value.map(item => item.leave_type?.name || 'Unknown');
-  const carryForward = formData.value.map(item => item.carry_forward);
-  const used = formData.value.map(item => item.used);
-  const balance = formData.value.map(item => item.balance);
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Carry Forward',
-        data: carryForward,
-        backgroundColor: '#facc15', // yellow
-        stack: 'leave',
-      },
-      {
-        label: 'Used',
-        data: used,
-        backgroundColor: '#10b981', // green
-        stack: 'leave',
-      },
-      {
-        label: 'Balance',
-        data: balance,
-        backgroundColor: '#3b82f6', // blue
-        stack: 'leave',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-      tooltip: {
-        mode: 'index',
-        intersect: false,
-      },
-      datalabels: {
-        display: true,
-        color: '#fff',
-        anchor: 'center',
-        align: 'center',
-        font: {
-          weight: 'bold',
-        },
-        formatter: value => (value > 0 ? value : ''),
-      },
-    },
-    scales: {
-      x: {
-        stacked: true,
-      },
-      y: {
-        stacked: true,
-        beginAtZero: true,
-      },
-    },
-  };
-
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-
-  chartInstance = new Chart(leaveChart.value, {
-    type: 'bar',
-    data,
-    options,
-    plugins: [ChartDataLabels],
-  });
-};
-
-watch([() => filter.year, () => filter.leave_type], getData);
-
-onMounted(() => {
-  getLeaveTypes();
+watch([() => filter.year, () => filter.leave_type], () => {
   getData();
+});
+
+// Initialize chart on mount and update on changes
+onMounted(() => {
+  // updateChart();
+  getData();
+  getLeaveTypes();
 });
 </script>
 
-<style scoped>
+<style>
 canvas {
   max-height: 100%;
   width: 100%;
