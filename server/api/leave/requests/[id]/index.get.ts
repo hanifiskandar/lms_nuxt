@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
 
   try {
-    const response = await $fetch(`/api/leave-requests/${id}`, {
+    const response = await $fetch(`/api/leave/requests/${id}`, {
       baseURL: config.public.laravelBaseUrl,
       method: "GET",
     });

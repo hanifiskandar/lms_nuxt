@@ -53,6 +53,13 @@
                 <li><NuxtLink to="/employee" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:account-details" class="w-5 h-5 mr-2" /><span>List Employee</span></NuxtLink></li>
               </ul>
             </li>
+            <li class="mb-2 mx-2">
+              <NuxtLink to="/department" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
+                <UIcon name="mdi:account" class="w-5 h-5 mr-2" />
+                <span v-if="sidebarOpen" class="ml-3">Manage Department</span>
+              </NuxtLink>
+            </li>
+
             <!-- Payslip Module -->
             <li class="mb-2 mx-2">
               <NuxtLink to="/payslip" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">

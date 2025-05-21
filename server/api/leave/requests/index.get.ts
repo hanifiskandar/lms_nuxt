@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const cookies = parseCookies(event);
 
   try {
-    const response = await $fetch("/api/leave-requests", {
+    const response = await $fetch("/api/leave/requests", {
       baseURL: config.public.laravelBaseUrl,
       method: "GET",
       query,

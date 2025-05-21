@@ -1,17 +1,18 @@
 import { $fetch } from "ofetch";
+import { getQuery } from "h3";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
+  const query = getQuery(event);
   const cookies = parseCookies(event);
-  const formData = await readFormData(event);
-
 
   try {
-    const response = await $fetch("/api/leave/requests", {
+    const response = await $fetch("/api/departments", {
       baseURL: config.public.laravelBaseUrl,
-      method: "POST",
-      body: formData, // Pass the raw incoming request (with multipart form)
+      method: "GET",
       headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
         Cookie: Object.entries(cookies)
           .map(([key, value]) => `${key}=${value}`)
           .join("; "),
@@ -19,13 +20,14 @@ export default defineEventHandler(async (event) => {
         Origin: config.public.nuxtBaseUrl,
         Referer: config.public.nuxtBaseUrl,
       },
+      query,
     });
 
     return response;
   } catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to store data",
+      statusMessage: "Failed to fetch data",
     });
   }
 });

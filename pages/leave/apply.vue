@@ -200,7 +200,7 @@ const onSubmit = async () => {
     const newFormData = prepareFormData(formData.value, 'attachment'); // Use the helper
     console.log(newFormData);
     
-    const response = await $fetch('/api/leave-requests/', {
+    const response = await $fetch('/api/leave/requests/', {
       method: 'POST',
       body: newFormData,
       credentials: "include",

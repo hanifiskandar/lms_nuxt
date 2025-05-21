@@ -3,14 +3,10 @@ import { $fetch } from "ofetch";
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const cookies = parseCookies(event);
-  const formData = await readFormData(event);
-
 
   try {
-    const response = await $fetch("/api/leave/requests", {
+    const response = await $fetch("/api/setting/users", {
       baseURL: config.public.laravelBaseUrl,
-      method: "POST",
-      body: formData, // Pass the raw incoming request (with multipart form)
       headers: {
         Cookie: Object.entries(cookies)
           .map(([key, value]) => `${key}=${value}`)
@@ -25,7 +21,7 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: "Failed to store data",
+      statusMessage: "Failed to fetch data.",
     });
   }
 });

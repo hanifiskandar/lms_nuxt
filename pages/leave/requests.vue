@@ -159,7 +159,7 @@ const getLeaveTypes = async () => {
 
 const getData = async () => {
   try {
-    const response = await $fetch('/api/leave-requests',{
+    const response = await $fetch('/api/leave/requests',{
       method: 'GET',
       query: {
         leave_type: filter.leave_type,
