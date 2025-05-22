@@ -67,13 +67,19 @@
                 <span v-if="sidebarOpen" class="ml-3">Payslip</span>
               </NuxtLink>
             </li>
+            <!-- Report -->
+            <li class="mb-2 mx-2">
+              <button @click="toggleReportMenu" class="flex items-center w-full p-3 rounded-lg hover:bg-emerald-800 text-left" :class="{ 'bg-emerald-900': employeeMenuOpen }">
+                <UIcon name="mdi:account-group" class="w-5 h-5 mr-2" />
+                <span v-if="sidebarOpen" class="ml-3">Report</span>
+                <UIcon :name="reportMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-5 h-5 ml-auto" v-if="sidebarOpen" />
+              </button>
+              <ul v-if="reportMenuOpen && sidebarOpen" class="pl-10 mt-1 space-y-1">
+                <li><NuxtLink to="/report/users" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:account-plus" class="w-5 h-5 mr-2" /><span>Employees</span></NuxtLink></li>
+                <li><NuxtLink to="/report/leave-requests" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:account-details" class="w-5 h-5 mr-2" /><span>Leave Requests</span></NuxtLink></li>
+              </ul>
+            </li>
             <!-- Settings -->
-            <!-- <li class="mb-2 mx-2">
-              <NuxtLink to="/setting" class="flex items-center p-3 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white">
-                <UIcon name="ic:sharp-settings" class="w-5 h-5 mr-2" />
-                <span v-if="sidebarOpen" class="ml-3">Settings</span>
-              </NuxtLink>
-            </li> -->
             <li class="mb-2 mx-2">
               <button 
                 @click="toggleSettingsMenu" 
@@ -260,6 +266,7 @@ const sidebarOpen = ref(true);
 const dropdownOpen = ref(false);
 const employeeMenuOpen = ref(false);
 const leaveMenuOpen = ref(false);
+const reportMenuOpen = ref(false);
 const notificationsOpen = ref(false);
 const settingsMenuOpen = ref(false);
 const currentTime = ref('');
@@ -321,6 +328,10 @@ const toggleEmployeeMenu = () => {
 
 const toggleLeaveMenu = () => {
   leaveMenuOpen.value = !leaveMenuOpen.value;
+};
+
+const toggleReportMenu = () => {
+  reportMenuOpen.value = !reportMenuOpen.value;
 };
 
 const toggleNotifications = () => {
