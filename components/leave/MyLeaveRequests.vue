@@ -7,7 +7,7 @@
       v-model:filter="filter"
       @reset="resetFilter"
     />
-    {{ data }}
+    <!-- {{ data }} -->
     <!-- Table -->
     <LeaveRequestTable :dataList="data" :showActions="false" />
 

@@ -13,7 +13,7 @@
         <div class="flex space-x-4">
           <USelect v-model="filter.designation" placeholder="Select Designation" :items="designationOptions" label-key="name" value-key="id" class="w-80" size="lg"></USelect>
           <USelect v-model="filter.department" placeholder="Select Department" :items="departmentOptions" label-key="name" value-key="id" class="w-80" size="lg"></USelect>
-          <USelect v-model="selectedExport" :items="exportOptions" placeholder="Export" icon="i-heroicons-arrow-down-tray" @change="handleExport"/>
+          <!-- <USelect v-model="selectedExport" :items="exportOptions" placeholder="Export" icon="i-heroicons-arrow-down-tray" @change="handleExport"/> -->
           <UButton icon="heroicons:arrow-path" color="primary" size="lg" @click="resetFilter"/>
           <NuxtLink to="/employee/new">
             <UButton icon="mdi:account-plus" color="primary" size="lg">New User</UButton>
@@ -59,7 +59,11 @@
                     <UIcon name="i-heroicons-pencil" />
                   </NuxtLink>
 
-                  <UButton @click="openDeleteModal(user.id)" class="icon-button bg-white text-red-500">
+                  <!-- <UButton @click="openDeleteModal(user.id)" class="icon-button bg-white text-red-500">
+                    <UIcon name="i-heroicons-trash" />
+                  </UButton> -->
+
+                  <UButton @click="deleteData(user.id)" class="icon-button bg-white text-red-500">
                     <UIcon name="i-heroicons-trash" />
                   </UButton>
                 </div>
@@ -119,18 +123,19 @@ function openDeleteModal(id) {
   showConfirmationDialog.value = true;
 }
 
-const deleteData = async () => {
+const deleteData = async (id) => {
   try {
-    const response = await $fetch(`/api/employee/${selectedUserId.value}`, {
+    const response = await $fetch(`/api/employee/${id}`, {
+    // const response = await $fetch(`/api/employee/${selectedUserId.value}`, {
         method: "DELETE",
       }
     );
-    showConfirmationDialog.value = false;
-    selectedUserId.value = null;
-    toast.add({title: 'Data berjaya dipadam.', icon: 'i-mdi-success-circle',});
+    // showConfirmationDialog.value = false;
+    // selectedUserId.value = null;
+    toast.add({title: 'Data succesfully deleted.', icon: 'i-mdi-success-circle',});
     getData();
   } catch (error) {
-    toast.add({title: 'Data tidak berjaya dipadam.', icon: 'i-mdi-error',});
+    toast.add({title: 'Data failed to delete.', icon: 'i-mdi-error', color: 'error'});
     console.error("Failed to delete data", error)
   }
 };

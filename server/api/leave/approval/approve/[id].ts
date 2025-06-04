@@ -6,13 +6,22 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const id = getRouterParam(event, "id");
   const query = getQuery(event);
-
+  const cookies = parseCookies(event);
 
   try {
-    const response = await $fetch(`/api/leave/approval/reject/${id}`, {
+    const response = await $fetch(`/api/leave/approval/approve/${id}`, {
       baseURL: config.public.laravelBaseUrl,
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Cookie: Object.entries(cookies)
+          .map(([key, value]) => `${key}=${value}`)
+          .join("; "),
+        "User-Agent": getRequestHeader(event, "user-agent") || "Nuxt/3",
+        Origin: config.public.nuxtBaseUrl,
+        Referer: config.public.nuxtBaseUrl,
+      },
       body,
       query,
     });

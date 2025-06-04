@@ -7,7 +7,7 @@
       v-model:filter="filter"
       @reset="resetFilter"
     />
-    {{ data }}
+    <!-- {{ data }} -->
     <!-- Table -->
     <LeaveRequestTable
       :dataList="data"
@@ -38,7 +38,7 @@ const filter = reactive({
   start_date: null,
   end_date: null,
 })
-
+const toast = useToast()
 const currentPage = ref(1)
 const itemsPerPage = 6
 const totalItems = ref(0)
@@ -92,9 +92,14 @@ const handleApprove = async (item) => {
   try {
     const response = await $fetch(`/api/leave/approval/approve/${item.id}`, {
       method: 'PATCH',
+      credentials: "include",
+
     });
+    await getData();
+    toast.add({title: 'Data succesfully approved.', icon: 'i-mdi-success-circle',});
     console.log('Approved:', response)
   } catch (error) {
+    toast.add({title: 'Data failed to approve.', icon: 'i-mdi-error', color: 'error'});
     console.error("Approve error:", error);
   }
 };
@@ -103,9 +108,15 @@ const handleReject = async (item) => {
   try {
     const response = await $fetch(`/api/leave/approval/reject/${item.id}`, {
       method: 'PATCH',
+      credentials: "include",
+
     });
+
+    await getData();
+    toast.add({title: 'Data succesfully rejected.', icon: 'i-mdi-success-circle',});
     console.log('Rejected:', response)
   } catch (error) {
+    toast.add({title: 'Data failed to reject.', icon: 'i-mdi-error', color: 'error'});
     console.error("Reject error:", error);
   }
 };

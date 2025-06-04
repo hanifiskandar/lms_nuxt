@@ -122,6 +122,7 @@ const auth = useAuth();
 const router = useRouter();
 const userId = computed(() => auth.user.id);
 
+const toast = useToast()
 // Reactive form data
 const formData = ref({
   leave_type_id: null,
@@ -207,12 +208,15 @@ const onSubmit = async () => {
     });
     
     backendErrors.value = {};
+    toast.add({title: 'Leave submitted successfully.', icon: 'i-mdi-success-circle',});
     console.log("Leave submitted successfully:", response);
     v$.value.$reset();
     router.push('/leave/requests');
 
   } catch (error) {
     backendErrors.value = error.response?.data?.errors || {};
+    toast.add({title: 'Leave failed to submit.', icon: 'i-mdi-error', color: 'error'});
+
     console.error("Submission error:", backendErrors.value);
   }
 };

@@ -7,6 +7,7 @@
         <thead class="bg-emerald-600">
           <tr>
             <th class="px-6 py-3 text-left text-sm font-semibold text-white">No</th>
+            <th v-if="showAction" class="px-6 py-3 text-left text-sm font-semibold text-white">Name</th>
             <th class="px-6 py-3 text-left text-sm font-semibold text-white">Leave Type</th>
             <th class="px-6 py-3 text-left text-sm font-semibold text-white">Start Date</th>
             <th class="px-6 py-3 text-left text-sm font-semibold text-white">End Date</th>
@@ -24,6 +25,7 @@
             class="hover:bg-gray-50 transition-colors"
           >
             <td class="px-6 py-4 text-sm whitespace-nowrap">{{ index + 1 }}</td>
+            <td v-if="showAction" class="px-6 py-4 text-sm whitespace-nowrap">{{ data.user?.name }}</td>
             <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.leave_type?.name }}</td>
             <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.start_date }}</td>
             <td class="px-6 py-4 text-sm whitespace-nowrap">{{ data.end_date }}</td>

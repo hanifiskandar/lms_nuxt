@@ -37,7 +37,7 @@
                 <li><NuxtLink to="/leave/apply" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-plus" class="w-5 h-5 mr-2" /><span>Apply Leave</span></NuxtLink></li>
                 <li><NuxtLink to="/leave/requests" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-question" class="w-5 h-5 mr-2" /><span>Leave Requests</span></NuxtLink></li>
                 <li><NuxtLink to="/leave/balance" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-check" class="w-5 h-5 mr-2" /><span>Leave Balance</span></NuxtLink></li>
-                <li><NuxtLink to="/leave/approvals" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-edit" class="w-5 h-5 mr-2" /><span>Leave Approvals</span></NuxtLink></li>
+                <!-- <li><NuxtLink to="/leave/approvals" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-edit" class="w-5 h-5 mr-2" /><span>Leave Approvals</span></NuxtLink></li> -->
                 <li><NuxtLink to="/leave/limits" class="flex items-center p-2 rounded-lg hover:bg-emerald-800" exact-active-class="bg-emerald-900 text-white"><UIcon name="mdi:calendar-range" class="w-5 h-5 mr-2" /><span>Leave Limits</span></NuxtLink></li>
               </ul>
             </li>
@@ -137,8 +137,8 @@
         </button>
         <div class="flex-1 ml-4">
           <h1 class="text-xl font-semibold animated-gradient">
-            <!-- Welcome, <span class="font-bold">{{ user?.name }}</span> -->
-            Welcome, <span class="font-bold">TEST</span>
+            Welcome, <span class="font-bold">{{ user?.name }}</span>
+            <!-- Welcome, <span class="font-bold">TEST</span> -->
           </h1>
           <!-- {{ user }} -->
           <div class="flex items-center space-x-2">
@@ -222,14 +222,14 @@
               class="absolute right-0 mt-3 w-56 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-20"
             >
               <div class="px-4 py-2 text-sm text-gray-700">
-                <!-- <p class="font-semibold">{{ user?.name }}</p>
-                <p class="text-xs text-gray-500">{{ user?.email }}</p> -->
-                <p class="font-semibold">Name1</p>
-                <p class="text-xs text-gray-500">email1@gmail.com</p>
+                <p class="font-semibold">{{ user?.name }}</p>
+                <p class="text-xs text-gray-500">{{ user?.email }}</p>
+                <!-- <p class="font-semibold">Name1</p>
+                <p class="text-xs text-gray-500">email1@gmail.com</p> -->
               </div>
               <hr class="border-t border-gray-200 my-1" />
               <NuxtLink 
-                to="/profile" 
+                to="/profile/personal" 
                 class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-emerald-600 transition-colors duration-150"
               >
                 <UIcon name="mdi:account" class="w-5 h-5 mr-2" />

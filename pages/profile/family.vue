@@ -319,6 +319,7 @@ definePageMeta({
 const auth = useAuth();
 const userId = computed(() => auth.user.id);
 
+const toast = useToast()
 const formData = ref({
   family_members: [],
   children: [],
@@ -443,11 +444,11 @@ const handleSubmit = async () => {
         page: page,
       }
     });
-    alert('Family info updated successfully!');
+    toast.add({title: 'Data succesfully updated.', icon: 'i-mdi-success-circle',});
     v$.value.$reset();
   } catch (error) {
+    toast.add({title: 'Data failed to update.', icon: 'i-mdi-error', color: 'error'});
     console.error('Error submitting family info:', error);
-    alert('Failed to update family info. Please try again.');
   }
 };
 

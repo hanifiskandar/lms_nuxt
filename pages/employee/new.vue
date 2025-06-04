@@ -207,6 +207,13 @@ import { ref, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, sameAs } from "@vuelidate/validators";
 
+definePageMeta({
+  middleware: ['auth'],
+});
+
+const toast = useToast()
+const router = useRouter();
+
 // Reactive form data
 const formData = ref({
   name: "",
@@ -290,9 +297,12 @@ const onSubmit = async () => {
       method: 'POST',
       body: formData.value,
     });
-
+    toast.add({title: 'Data succesfully created.', icon: 'i-mdi-success-circle',});
     backendErrors.value = {};
+    router.push('/employee');
+
   } catch (error) {
+    toast.add({title: 'Data failed to create.', icon: 'i-mdi-error', color: 'error'});
     backendErrors.value = error.response?.data?.errors || {};
     console.error("Submission error:", backendErrors.value);
   }

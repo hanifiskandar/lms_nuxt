@@ -11,7 +11,7 @@
 
         <div class="flex space-x-4">
           <USelect v-model="filter.department" placeholder="Select Department" :items="departmentOptions" label-key="name" value-key="id" class="w-80" size="lg"></USelect>
-          <USelect v-model="selectedExport" :items="exportOptions" placeholder="Export" icon="i-heroicons-arrow-down-tray" @change="handleExport"/>
+          <!-- <USelect v-model="selectedExport" :items="exportOptions" placeholder="Export" icon="i-heroicons-arrow-down-tray" @change="handleExport"/> -->
           <UButton icon="heroicons:arrow-path" color="primary" size="lg" @click="resetFilter"/>
         </div>
       </div>
@@ -70,7 +70,6 @@ definePageMeta({
 const auth = useAuth();
 const user = computed(() => auth.user);
 
-const toast = useToast()
 const formData = ref([]);
 const departmentOptions = ref([]);
 const selectedExport = ref(null);

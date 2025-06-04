@@ -221,8 +221,12 @@ import { ref, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers, sameAs } from "@vuelidate/validators";
 
+definePageMeta({
+  middleware: ['auth'],
+});
 // Reactive form data
 const formData = ref({});
+const toast = useToast()
 const departmentOptions = ref([]);
 const designationOptions = ref([]);
 const route = useRoute();
@@ -256,9 +260,9 @@ const rules = {
   designation_id: { required: helpers.withMessage("Designation is required", required) },
   department_id: { required: helpers.withMessage("Department is required", required) },
   username: { required: helpers.withMessage("Username is required", required) },
-  password: { required: helpers.withMessage("Password is required", required) },
+  // password: { required: helpers.withMessage("Password is required", required) },
   password_confirmation: {
-    required: helpers.withMessage("Password Confirmation is required", required),
+    // required: helpers.withMessage("Password Confirmation is required", required),
     sameAsPassword: helpers.withMessage("Katalaluan tidak sepadan", sameAs(passwordValue))
   },
 };
@@ -278,7 +282,7 @@ const errorMessages = computed(() => ({
   designation_id: v$.value.designation_id.$error ? v$.value.designation_id.$errors[0].$message : backendErrors.value.designation_id?.[0] || "",
   department_id: v$.value.department_id.$error ? v$.value.department_id.$errors[0].$message : backendErrors.value.department_id?.[0] || "",
   username: v$.value.username.$error ? v$.value.username.$errors[0].$message : backendErrors.value.username?.[0] || "",
-  password: v$.value.password.$error ? v$.value.password.$errors[0].$message : backendErrors.value.password?.[0] || "",
+  // password: v$.value.password.$error ? v$.value.password.$errors[0].$message : backendErrors.value.password?.[0] || "",
   password_confirmation: v$.value.password_confirmation.$error ? v$.value.password_confirmation.$errors[0].$message : backendErrors.value.password_confirmation?.[0] || "",
 }));
 
@@ -296,8 +300,11 @@ const onSubmit = async () => {
       body: formData.value,
     });
 
+    toast.add({title: 'Data succesfully updated.', icon: 'i-mdi-success-circle',});
     backendErrors.value = {};
   } catch (error) {
+
+    toast.add({title: 'Data failed to update.', icon: 'i-mdi-error', color: 'error'});
     backendErrors.value = error.response?.data?.errors || {};
     console.error("Submission error:", backendErrors.value);
   }
